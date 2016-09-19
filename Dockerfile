@@ -1,10 +1,9 @@
-FROM l3iggs/lamp
-MAINTAINER l3iggs <l3iggs@live.com>
+FROM greyltc/lamp
 # Report issues here: https://github.com/l3iggs/docker-owncloud/issues
 # Say thanks by adding a star or a comment here: https://registry.hub.docker.com/u/l3iggs/owncloud/
 
 # Fix package versions
-RUN echo "Server=http://ala.seblu.net/repos/2015/11/12/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+RUN echo "Server=http://ala.seblu.net/repos/2016/07/20/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 
 # upldate package list
 RUN pacman -Syyuu --noconfirm
@@ -46,7 +45,7 @@ RUN pacman -S --noconfirm --needed owncloud-app-bookmarks
 RUN pacman -S --noconfirm --needed owncloud-app-calendar
 RUN pacman -S --noconfirm --needed owncloud-app-contacts
 RUN pacman -S --noconfirm --needed owncloud-app-documents
-RUN pacman -S --noconfirm --needed owncloud-app-gallery
+#RUN pacman -S --noconfirm --needed owncloud-app-gallery
 
 # disable Apache's dav in favor of the dav built into OC
 RUN sed -i 's,^DAVLockDB /home/httpd/DAV/DAVLock,#&,g' /etc/httpd/conf/httpd.conf
@@ -88,4 +87,5 @@ RUN crontab /etc/oc-cron.conf
 RUN systemctl start cronie.service; exit 0 # force success due to issue with cronie start https://goo.gl/DcGGb
 
 # start servers
-CMD ["/root/startServers.sh"]
+CMD start-servers; sleep infinity
+
